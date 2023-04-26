@@ -1,3 +1,5 @@
+
+
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -16,49 +18,51 @@ const ServerStatus = ({ }: Props) => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [serverStatus, setServerStatus] = useState<boolean | null>(true);
 
-  useEffect(() => {
-    const checkServerStatus = async () => {
-      try {
-        const response = await axios.get<ServerStatus>(
-          `${apiUrl}/health`
-        );
-        const serverStatus = response.data.status === 'OK';
-        if (serverStatus) {
-          router.push('/questions');
-          setTimeout(() => {
-            setIsLoading(false)
-          }, 1000);
-        }
-      } catch (error) {
-        console.error(error);
-        setIsLoading(false)
+  const checkServerStatus = async () => {
+    setIsLoading(true)
+    try {
+      const response = await axios.get<ServerStatus>(
+        `${apiUrl}/health`
+      );
+      const serverStatus = response.data.status === 'OK';
+      if (serverStatus) {
+        router.push('/questions');
+        setTimeout(() => {
+          setServerStatus(true);
+          setIsLoading(false)
+        }, 1000);
       }
-    };
-    checkServerStatus();
-  }, [router]);
-
-  const handleReload = () => {
-    router.reload();
+    } catch (error) {
+      // console.error(error);
+      setIsLoading(false)
+      setServerStatus(false)
+    }
   };
 
   return (
     <div className='server-check'>
-      {isLoading ? 
-      (
-        <div className='loading'>
-        <Image src="/images/load.gif" alt="Loading image" width={100} height={100}/>
-        <p>Verifying server status...</p>
-        </div>
-        )
-      : (
+      {
+        isLoading ? (
+          <div className='loading'>
+            <Image src="/images/load.gif" alt="Loading image" width={100} height={100} />
+            <p>Verifying server status...</p>
+          </div>
+        ) : (
+          !serverStatus ? (
             <>
-              <Image src="/images/disconnected.svg" alt="Disconnected image" width={200} height={200}/>
+              <Image src="/images/disconnected.svg" alt="Disconnected image" width={200} height={200} />
               <p>The server is not available!</p>
-              <Button functionButton={handleReload} title="Check Server"/>
+              <Button functionButton={checkServerStatus} title="Check Server" />
             </>
-      )}
+          ) :
+            <>
+              <p>Hey, Welcome!</p>
+              <Button functionButton={checkServerStatus} title="Check Server" />
+            </>
+        )}
     </div>
   );
 };
