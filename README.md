@@ -4,7 +4,7 @@ About
 Bliss App Questions is a web application built with Next.js that allows users to search, vote, and share questions or search results. It uses an API endpoint to manage the questions data.
 
 
-<a href="https://bliss-app-questions.vercel.app/" target="_blank"><img src="/public/images/screen-project.png" alt="App Preview"/></a>
+<a href="https://bliss-app-questions.vercel.app/" target="_blank"><img src="/public/images/screen-project.gif" alt="App Preview"/></a>
 
 
 ## Installation
