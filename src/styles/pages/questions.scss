@@ -1,6 +1,7 @@
 .search-box {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 20px 0px;

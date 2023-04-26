@@ -2,8 +2,7 @@ input {
     padding: 10px;
     border: 2px solid $bg-color;
     border-radius: 4px;
-    width: 500px;
-
+    max-width: 100%;
     &:focus {
         outline: none;
         border: 2px solid $bg-color-base;
