@@ -1,0 +1,60 @@
+@import "variables";
+@import '../styles/components/Button';
+@import '../styles/components/ConnectionStatus';
+@import '../styles/components/FilterForm';
+@import '../styles/components/QuestionItem';
+@import '../styles/components/ServerStatus';
+@import '../styles/components/ShareComponent';
+
+@import '../styles/pages/details';
+@import '../styles/pages/questions';
+
+* {
+  font-family: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
+    'Roboto Mono', 'Oxygen Mono', 'Ubuntu Monospace', 'Source Code Pro',
+    'Fira Mono', 'Droid Sans Mono', 'Courier New', monospace;
+}
+
+body {
+  max-width: 1270px;
+  margin: auto;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: $bg-color-base;
+  border-radius: 8px;
+}
+
+main {
+  border-radius: 8px;
+  padding: 20px;
+  background-color: $light-color;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+  padding: 20px;
+  background-color: $bg-color-base;
+  border-radius: 8px;
+}
+
+h2 {
+  background-color: $bg-color-base;
+  color: $title-color;
+  font-size: $medium-font-size;
+}
+
+a {
+  color: $link-color;
+  background-color: $bg-color-base;
+}
+
+button {
+  @include primary-button;
+}
