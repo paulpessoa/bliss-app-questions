@@ -1,0 +1,44 @@
+.search-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0px;
+
+    .back-home {
+        @include outlined-button;
+    }
+}
+
+.results-box {
+    border: 4px dashed $bg-color;
+    border-radius: 8px;
+    padding: 10px;
+
+    .result-share {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .title {
+        margin: 4px;
+        background-color: $light-color;
+    }
+
+    .results-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+
+        .chip {
+            @include chip-button
+        }
+    }
+
+    .action {
+        display: flex;
+        justify-content: flex-end;
+    }
+}
