@@ -1,5 +1,5 @@
 # Bliss App Questions
-
+<code>
 ├── pages/
 │   └── details/
 │       └── [id].tsx
@@ -37,3 +37,4 @@
 ├── tsconfig.json
 ├── next.config.js
 └── .env.local
+</code>
