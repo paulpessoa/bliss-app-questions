@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import ButtonBack from "../../../components/ButtonBack";
 import Button from "../../../components/Button";
+import defaultImage from '/public/images/default-image.png';
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -27,11 +28,11 @@ type QuestionDetailsProps = {
   error?: string;
 };
 
-const QuestionDetails = ({ question, error }: QuestionDetailsProps) => {
+const QuestionDetails = ({ question, error }: QuestionDetailsProps): JSX.Element => {
   const router = useRouter();
-  const [selectedChoice, setSelectedChoice] = useState("");
-  const [modalConfirm, setModalConfirm] = useState(null);
-  const [modalShare, setModalShare] = useState(null);
+  const [selectedChoice, setSelectedChoice] = useState<string>("");
+  const [modalConfirm, setModalConfirm] = useState<boolean>(false);
+  const [modalShare, setModalShare] = useState<boolean>(false);
 
   const handleChoiceSelect = (choice: string) => {
     setSelectedChoice(choice);
@@ -42,6 +43,8 @@ const QuestionDetails = ({ question, error }: QuestionDetailsProps) => {
   };
 
   const handleModalConfirm = async () => {
+    if (!question) return;
+
     const choiceIndex = question.choices.findIndex((c) => c.choice === selectedChoice);
     const choices = [...question.choices];
     choices[choiceIndex] = {
@@ -50,7 +53,7 @@ const QuestionDetails = ({ question, error }: QuestionDetailsProps) => {
     };
 
     try {
-      const response = await axios.put(`${apiUrl}/questions`, {
+      await axios.put(`${apiUrl}/questions`, {
         id: question.id,
         choices,
       });
@@ -65,19 +68,24 @@ const QuestionDetails = ({ question, error }: QuestionDetailsProps) => {
     <div className="details">
       <div className="head">
         <h2>Question details</h2>
-        <ButtonBack className="outlined-button" title="Back to List" />
+        <ButtonBack className="outlined-button" title="Questions List" />
       </div>
 
       <div className="content">
         <div className="image">
-          <Image width={600 * 0.7} height={400 * 0.7} src={question.image_url} alt={question.question} />
+          <Image
+            width={600 * 0.7}
+            height={400 * 0.7}
+            src={question?.image_url ?? defaultImage}
+            alt={question?.question ?? ""}
+          />
         </div>
         <div className="options">
           <h2>
-            {question.id} - {question.question}
+            {question?.id} - {question?.question}
           </h2>
           <div>
-            {question.choices.map((choice, index) => (
+            {question?.choices.map((choice, index) => (
               <div className="option-item" key={index}>
                 <button className="choice" onClick={() => handleChoiceSelect(choice.choice)}>
                   <span> {choice.choice} </span>
@@ -93,14 +101,27 @@ const QuestionDetails = ({ question, error }: QuestionDetailsProps) => {
         </div>
       </div>
 
+      {modalConfirm && question && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h2>Confirm your choice</h2>
+            <p>You are about to vote for {selectedChoice}. Are you sure?</p>
+            <div className="modal-buttons">
+              <Button className="outlined-button" title="Cancelar" functionButton={() => setModalConfirm(false)} />
+              <Button className="primary-button" title="Vote" disabled={selectedChoice === ''} functionButton={() => setModalConfirm(true)} />
+            </div>
+          </div>
+        </div>
+      )}
+
       {modalConfirm && (
         <div className="modal-overlay">
           <div className="modal">
             <h2>Confirm your choice</h2>
-            <p>You are about to vote for "{selectedChoice}". Are you sure?</p>
+            <p>You are about to vote for {selectedChoice}. Are you sure?</p>
             <div className="modal-buttons">
               <Button className="outlined-button" title="Cancelar" functionButton={() => setModalConfirm(false)} />
-              <Button className="primary-button" title="Confirmar" onClick={handleModalConfirm} />
+              <Button className="primary-button" title="Confirmar" functionButton={handleModalConfirm} />
             </div>
           </div>
         </div>

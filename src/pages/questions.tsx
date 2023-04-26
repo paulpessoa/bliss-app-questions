@@ -44,12 +44,12 @@ const Questions = ({ questions }: { questions: Question[] }) => {
     <div className="questions-page">
       <div className='search-box'>
         <FilterForm
-          onFilterChange={handleFilterChange}
-          onOffsetChange={handleOffsetChange}
-          onLimitChange={handleLimitChange}
+          // onFilterChange={handleFilterChange}
+          // onOffsetChange={handleOffsetChange}
+          // onLimitChange={handleLimitChange}
         />
 
-        <ButtonBack className="outlined-button" title="Back to Home" />
+        <ButtonBack className="outlined-button" title="Home" />
       </div>
 
       <div className='results-box'>
