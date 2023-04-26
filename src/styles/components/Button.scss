@@ -1,0 +1,13 @@
+@import '../mixins.scss';
+
+.button-primary {
+    @include primary-button;
+}
+
+.chip-button {
+    @include chip-button;
+}
+
+.outlined-button {
+    @include outlined-button;
+}
