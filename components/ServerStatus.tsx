@@ -58,8 +58,9 @@ const ServerStatus = ({ }: Props) => {
               <Button functionButton={checkServerStatus} title="Check Server" />
             </>
           ) :
-            <>
+          <>
               <p>Hey, Welcome!</p>
+              <Image src="/images/check.svg" alt="Check image" width={250} height={250} />
               <Button functionButton={checkServerStatus} title="Check Server" />
             </>
         )}
