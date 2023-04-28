@@ -36,7 +36,7 @@ const ConnectionStatus = (): JSX.Element => {
     <>
       {showNotification && (
         <div className={`notification ${isOnline ? "success" : "error"}`}>
-          <span className="text">{isOnline ? 'You are connected!' : 'You are offline!'}</span>
+          <span className="text">{isOnline ? 'Online!' : 'Offline!'}</span>
           <button onClick={handleCloseNotification} className="close">X</button>
         </div>
       )}
