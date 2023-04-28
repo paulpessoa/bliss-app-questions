@@ -29,11 +29,11 @@ const QuestionItem = ({ questions }: QuestionItemProps) => {
     <div className="question-box">
       {questions.map((question) => (
         <div key={question.id} className="content" onClick={() => handleQuestionClick(question.id)}>
-          <div className="title">
-            <h2>{question.id}. {question.question}</h2>
-          </div>
           <div className="image">
             <Image src={question?.image_url ?? defaultImage} alt={question?.question ?? ""} width={120} height={120} />
+          </div>
+          <div className="title">
+            <h2>{question.id} - {question.question}</h2>
           </div>
         </div>
       ))}

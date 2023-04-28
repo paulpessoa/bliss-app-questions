@@ -1,17 +1,21 @@
 .question-box {
+    margin-top: 20px;
     background-color: $light-color;
     display: flex;
-    flex-direction: column;
-    margin-top: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
 
     .content {
         display: flex;
-        justify-content: space-between;
+        justify-content: left;
         align-items: center;
         background-color: $bg-color;
         border-radius: 8px;
-        margin: 6px 0px;
-        padding: 10px 20px;
+        margin: 6px auto;
+        padding: 14px;
+        min-width: 350px;
+        width: 100%;
+        max-width: 100%;
         cursor: pointer;
 
         &:hover {
@@ -22,19 +26,18 @@
                 background-color: $bg-color-hover;
             }
         }
-
-        .title,
-        h2 {
+        
+        .title, h2 {
             background-color: $bg-color;
-
         }
 
         .image {
-            border-radius: 50%;
+            border-radius: 4px;
             overflow: hidden;
-            width: 50px;
             height: 50px;
-            object-fit: contain;
+            width: 50px;
+            margin-right: 20px;
+            object-fit: cover;
             display: flex;
             align-items: center;
             justify-content: center;
