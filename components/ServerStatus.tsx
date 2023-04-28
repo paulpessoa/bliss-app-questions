@@ -1,21 +1,10 @@
-
-
-import axios from 'axios';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'next/image'
 import Button from '../components/Button'
+import { supabase } from '../lib/supabase'
 
-interface ServerStatus {
-  status: string;
-}
-
-interface Props {
-  serverStatus: boolean;
-}
-
-const ServerStatus = ({ }: Props) => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const ServerStatus = () => {
 
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -24,19 +13,19 @@ const ServerStatus = ({ }: Props) => {
   const checkServerStatus = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.get<ServerStatus>(
-        `${apiUrl}/health`
-      );
-      const serverStatus = response.data.status === 'OK';
-      if (serverStatus) {
+      const { data } = await supabase.from('health').select('status');
+      if (data && data.length && data[0].status === 'OK') {
         router.push('/questions');
         setTimeout(() => {
           setServerStatus(true);
           setIsLoading(false)
-        }, 1000);
+        }, 1500);
+      } else {
+        setIsLoading(false)
+        setServerStatus(false)
       }
     } catch (error) {
-      // console.error(error);
+      console.log(error)
       setIsLoading(false)
       setServerStatus(false)
     }
@@ -58,7 +47,7 @@ const ServerStatus = ({ }: Props) => {
               <Button functionButton={checkServerStatus} title="Check Server" />
             </>
           ) :
-          <>
+            <>
               <p>Hey, Welcome!</p>
               <Image src="/images/check.svg" alt="Check image" width={250} height={250} />
               <Button functionButton={checkServerStatus} title="Check Server" />
