@@ -1,10 +1,8 @@
 @import "variables";
 @import '../styles/components/Button';
 @import '../styles/components/ConnectionStatus';
-@import '../styles/components/FilterForm';
 @import '../styles/components/QuestionItem';
 @import '../styles/components/ServerStatus';
-@import '../styles/components/ShareComponent';
 
 @import '../styles/pages/details';
 @import '../styles/pages/questions';
@@ -57,4 +55,21 @@ a {
 
 button {
   @include primary-button;
+}
+
+input {
+  padding: 10px;
+  border: 2px solid $bg-color;
+  border-radius: 4px;
+  max-width: 100%;
+  &:focus {
+      outline: none;
+      border: 2px solid $bg-color-base;
+      background-color: $bg-color-hover;
+  }
+
+  &:hover {
+      border: 2px solid $bg-color-base;
+      background-color: $bg-color;
+  }
 }
