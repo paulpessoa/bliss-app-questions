@@ -1,0 +1,34 @@
+.modal-share {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: #fff;
+    border-radius: 4px;
+    width: 260px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    padding: 40px;
+    h2 {
+        background-color: $light-color;
+    }
+    input {
+        width: 100%;
+        max-width: 232px;
+        margin-bottom: 10px;
+    }
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+ }

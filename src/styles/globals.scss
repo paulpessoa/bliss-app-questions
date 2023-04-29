@@ -3,6 +3,7 @@
 @import '../styles/components/ConnectionStatus';
 @import '../styles/components/QuestionItem';
 @import '../styles/components/ServerStatus';
+@import '../styles/components/ShareContent';
 
 @import '../styles/pages/details';
 @import '../styles/pages/questions';
@@ -50,7 +51,6 @@ h2 {
 
 a {
   color: $link-color;
-  background-color: $bg-color-base;
 }
 
 button {

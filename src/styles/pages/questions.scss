@@ -1,45 +1,40 @@
-.search-box {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0px;
-
-    .back-home {
-        @include outlined-button;
-    }
-}
-
-.results-box {
-    border: 4px dashed $bg-color;
-    border-radius: 8px;
-    padding: 10px;
-
-    .result-share {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .title {
-        margin: 4px;
-        background-color: $light-color;
-    }
-
-    .results-list {
+.questions-page {
+    .search-box {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        margin-bottom: 20px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0px;
 
-        .chip {
-            @include chip-button
+      }
+      @media only screen and (max-width: 768px) {
+        .search-box {
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          .input {
+            width: 290px;
+            max-width: 100vw;
+          }
         }
     }
-
-    .action {
+  
+    .no-results-container {
         display: flex;
-        justify-content: flex-end;
-    }
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 40px;
+      }
+      
+      .no-results h2 {
+        margin-bottom: 20px;
+      }
+
+      .dismiss-button{
+        @include outlined-button;
+      }
+      
 }
+
