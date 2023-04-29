@@ -8,6 +8,9 @@ const ConnectionStatus = (): JSX.Element => {
     const handleOnline = () => {
       setIsOnline(true);
       setShowNotification(true);
+      setTimeout(() => {
+        setShowNotification(false);        
+      }, 8000);
     };
 
     const handleOffline = () => {
