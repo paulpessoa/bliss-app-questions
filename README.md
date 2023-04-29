@@ -50,6 +50,8 @@ Axios <code>npm install axios</code>
 
 Sass <code>npm install sass sass-loader --save-dev</code>
 
+Supabase <code>npm install @supabase/supabase-js@latest</code>
+
 ## License
 This project is licensed under the MIT License. See the LICENSE.md file for details.
 
@@ -65,13 +67,10 @@ This project is licensed under the MIT License. See the LICENSE.md file for deta
 │   ├── questions.tsx
 ├── components/
 │   ├── Button.tsx
-│   ├── ButtonBack.tsx
 │   ├── ConnectionStatus.tsx
-│   ├── FilterForm.tsx
-│   ├── ListResults.tsx
 │   ├── QuestionItem.tsx
 │   ├── ServerStatus.tsx
-│   ├── ShareComponent.tsx
+│   ├── ShareContent.tsx
 ├── styles/
 │   └── global.css
 │   └── home.modules.scss
@@ -83,11 +82,9 @@ This project is licensed under the MIT License. See the LICENSE.md file for deta
 │   └── components/
 │       └── Button.scss
 │       └── ConnectionStatus.scss
-│       └── FilterForm.scss
-│       └── ListResults.scss
 │       └── QuestionItem.scss
 │       └── ServerStatus.scss
-│       └── ShareComponent.scss
+│       └── ShareContent.scss
 ├── public/
 │   └── images/
 ├── package.json
