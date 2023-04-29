@@ -3,10 +3,13 @@ interface Props{
     className?: string;
     functionButton?: React.MouseEventHandler<HTMLButtonElement>;
     disabled?: boolean;
+    href?: string;
 }
 
-export default function Button({title, className, functionButton, disabled} : Props) {
+export default function Button({title, className, functionButton, disabled, href} : Props) {
     return (
-        <button className={className} disabled={disabled} onClick={functionButton}>{title}</button>
+        <a href={href} >
+            <button className={className} disabled={disabled} onClick={functionButton}>{title}</button>
+        </a>
     )
 }
