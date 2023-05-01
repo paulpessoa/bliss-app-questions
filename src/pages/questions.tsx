@@ -1,17 +1,15 @@
 import { GetServerSideProps } from 'next';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import axios from 'axios';
-
-import FilterForm from '../../components/FilterForm';
 import QuestionItem from '../../components/QuestionItem';
-import ButtonBack from '../../components/ButtonBack'
 import Button from '../../components/Button'
-
+import ShareContent from '../../components/ShareContent';
+import api from '../../api'
 
 interface Question {
   id: number;
   question: string;
-  image_url: string;
+  image_url?: string;
   thumb_url: string;
   published_at: string;
   choices: {
@@ -20,61 +18,109 @@ interface Question {
   }[];
 }
 
-const Questions = ({ questions }: { questions: Question[] }) => {
+interface QuestionsProps {
+  questions: {
+    filter: string;
+  }[];
+  paramLimit: number;
+  paramOffset: number;
+  paramFilter: string;
+  initialQuestions: Question[];
+}
 
-  const [filter, setFilter] = useState('');
-  const [offset, setOffset] = useState(2);
-  const [limit, setLimit] = useState(20);
+const Questions = ({ initialQuestions, paramFilter, paramOffset, paramLimit }: QuestionsProps) => {
+  const offset = paramOffset ?? 0
+  const limit = paramLimit ?? 10
+  
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
+  const [filter, setFilter] = useState<string>(paramFilter ?? '');
+  const [newLimit, setNewLimit] = useState<number>(limit);
+  
+  useEffect(() => {
+    const filtered = initialQuestions.filter((question) => {
+      return question.question.toLowerCase().includes(filter.toLowerCase())
+    });
+    setFilteredQuestions(filtered);
+  }, [filter, initialQuestions]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+      if (scrollTop + clientHeight >= scrollHeight) {
+        setNewLimit(newLimit + limit);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [newLimit, limit]);
 
-  const handleFilterChange = (value: string) => {
-    setFilter(value);
-  };
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      setIsLoading(true)
+      try {
+        const response = await api.get(
+          `/rest/v1/questions?question=ilike.%25${filter}%25&offset=${offset}&limit=${newLimit}`
+        );
+        setFilteredQuestions(response.data ?? []);
+        setIsLoading(false)
+      }
+      catch (error) {
+        setIsLoading(false)
+      }
+    };
+    fetchQuestions();
+  }, [newLimit, filter, offset]);
 
-  const handleOffsetChange = (value: number) => {
-    setOffset(value);
-  };
+  const questions: Question[] = filteredQuestions.map((question) => ({
+    id: question.id,
+    image_url: question.image_url,
+    question: question.question,
+    thumb_url: '',
+    published_at: '',
+    choices: question.choices,
 
-  const handleLimitChange = (value: number) => {
-    setLimit(value);
-  };
-
+  }));
 
   return (
     <div className="questions-page">
       <div className='search-box'>
-        <FilterForm
-          // onFilterChange={handleFilterChange}
-          // onOffsetChange={handleOffsetChange}
-          // onLimitChange={handleLimitChange}
-        />
-
-        <ButtonBack className="outlined-button" title="Home" />
-      </div>
-
-      <div className='results-box'>
-        <div className='result-share'>
-          <h2 className='title'>Results...</h2>
-        </div>
-
-        <div className='results-list'>
-          <button className='chip'>1. ajsdh kasjhd kajs...  </button>
-          <button className='chip'>9. asdlknaskl asd...  </button>
-          <button className='chip'>27. asçkdm...  </button>
-          <button className='chip'>42. klçansd aksd... </button>
-          <button className='chip'>35. as sds sdsds...</button>
-          <button className='chip'>52. a ksd asd asd ...  </button>
-          <button className='chip'>18. sadk ksadlksadkl ... </button>
-          <button className='chip'>42. asd asd ... </button>
-          <button className='chip'>35. adas k...</button>
-
+        <div className='filter-input'>
+          <input className='input'
+            type='text'
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            placeholder='Filter list...'
+          />
+          {filter && (
+            <Button className='outlined-button' functionButton={() => setFilter('')} title="X" />
+          )}
         </div>
         <div className='action'>
-          <Button title="Share results" />
+          <ShareContent />
+          <Button href='/' className='outlined-button' title='Home' />
         </div>
       </div>
 
-      {questions && <QuestionItem questions={questions} />}
+      {questions?.length > 0 ? (
+        <QuestionItem questions={questions} />
+      ) : (
+        <div className="no-results-container">
+          {isLoading ?
+            <>
+              <p>Loading...</p>
+              <Image src="/images/load-bg.gif" alt="No results" width={200} height={200} />
+            </>
+            :
+            <>
+              <p>No results found.</p>
+              <Image src="/images/searching.svg" alt="No results" width={300} height={300} />
+            </>
+          }
+        </div>
+      )}
     </div>
   );
 };
@@ -82,14 +128,20 @@ const Questions = ({ questions }: { questions: Question[] }) => {
 export default Questions;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const { filter, offset, limit } = context.query;
-  const response = await axios.get(`${apiUrl}/questions?filter=${filter}&offset=${offset}&limit=${limit}`);
-  const questions = response.data;
-
+  const paramLimit = context.query.limit ?? 10
+  const paramOffset = context.query.offset ?? 0
+  const paramFilter = context.query.filter ?? ''
+  const response = await api.get(`/rest/v1/questions?question=ilike.%25${paramFilter}%25&offset=${paramOffset}&limit=${paramLimit}`);
+  const initialQuestions = response.data.map((question: Question) => ({
+    question: question.question,
+    choices: question.choices
+  }));
   return {
     props: {
-      questions,
+      paramLimit,
+      paramOffset,
+      paramFilter,
+      initialQuestions,
       revalidate: 60,
     },
   };
