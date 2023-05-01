@@ -2,6 +2,7 @@ import Head from "next/head";
 import styles from '../styles/home.module.scss';
 import ServerStatus from "../../components/ServerStatus";
 
+
 export default function Home() {
   return (
     <>
@@ -14,7 +15,7 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.container}>
           <div className={styles.box}>
-            <ServerStatus serverStatus={false} />
+            <ServerStatus />
           </div>
         </div>
       </main>
