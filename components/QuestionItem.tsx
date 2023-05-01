@@ -2,10 +2,10 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import defaultImage from '/public/images/default-image.png';
 
-type Question = {
+interface Question {
   id: number;
   question: string;
-  image_url: string;
+  image_url?: string | undefined;
   thumb_url: string;
   published_at: string;
   choices: {
@@ -14,7 +14,7 @@ type Question = {
   }[];
 };
 
-type QuestionItemProps = {
+interface QuestionItemProps {
   questions: Question[];
 };
 
