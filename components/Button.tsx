@@ -5,11 +5,12 @@ interface Props{
     disabled?: boolean;
     href?: string;
 }
-
-export default function Button({title, className, functionButton, disabled, href} : Props) {
+const Button = ({title, className, functionButton, disabled, href} : Props) => {
     return (
         <a href={href} >
             <button className={className} disabled={disabled} onClick={functionButton}>{title}</button>
         </a>
     )
 }
+
+export default Button
