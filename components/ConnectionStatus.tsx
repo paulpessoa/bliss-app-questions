@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 
-const ConnectionStatus = (): JSX.Element => {
+const ConnectionStatus = () => {
   const [isOnline, setIsOnline] = useState<boolean>(false);
-  const [showNotification, setShowNotification] = useState<boolean>(true);
+  const [showNotification, setShowNotification] = useState<boolean>(false);
 
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
       setShowNotification(true);
       setTimeout(() => {
-        setShowNotification(false);        
+        setShowNotification(false);
       }, 8000);
     };
 
