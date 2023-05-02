@@ -1,10 +1,11 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import QuestionItem from '../../components/QuestionItem';
 import Button from '../../components/Button'
 import ShareContent from '../../components/ShareContent';
 import api from '../../api'
+import { useRouter } from 'next/router';
 
 interface Question {
   id: number;
@@ -29,6 +30,9 @@ interface QuestionsProps {
 }
 
 const Questions = ({ initialQuestions, paramFilter, paramOffset, paramLimit }: QuestionsProps) => {
+  const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const offset = paramOffset ?? 0
   const limit = paramLimit ?? 10
 
@@ -39,6 +43,11 @@ const Questions = ({ initialQuestions, paramFilter, paramOffset, paramLimit }: Q
   const [isTouchScreen, setIsTouchScreen] = useState(false);
 
   useEffect(() => {
+    //Input focus
+    if (router.query.filter !== undefined) {
+      inputRef.current?.focus();
+    }
+
     const mql = window.matchMedia("(pointer: coarse)");
     setIsTouchScreen(mql.matches);
     const listener = (e: MediaQueryListEvent) => setIsTouchScreen(e.matches);
@@ -98,6 +107,7 @@ const Questions = ({ initialQuestions, paramFilter, paramOffset, paramLimit }: Q
       <div className='search-box'>
         <div className='filter-input'>
           <input className='input'
+            ref={inputRef}
             type='text'
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
