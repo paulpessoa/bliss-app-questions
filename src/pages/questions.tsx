@@ -31,12 +31,21 @@ interface QuestionsProps {
 const Questions = ({ initialQuestions, paramFilter, paramOffset, paramLimit }: QuestionsProps) => {
   const offset = paramOffset ?? 0
   const limit = paramLimit ?? 10
-  
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [filteredQuestions, setFilteredQuestions] = useState<Question[]>([]);
   const [filter, setFilter] = useState<string>(paramFilter ?? '');
   const [newLimit, setNewLimit] = useState<number>(limit);
-  
+  const [isTouchScreen, setIsTouchScreen] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(pointer: coarse)");
+    setIsTouchScreen(mql.matches);
+    const listener = (e: MediaQueryListEvent) => setIsTouchScreen(e.matches);
+    mql.addEventListener("change", listener);
+    return () => mql.removeEventListener("change", listener);
+  }, []);
+
   useEffect(() => {
     const filtered = initialQuestions.filter((question) => {
       return question.question.toLowerCase().includes(filter.toLowerCase())
@@ -105,7 +114,14 @@ const Questions = ({ initialQuestions, paramFilter, paramOffset, paramLimit }: Q
       </div>
 
       {questions?.length > 0 ? (
-        <QuestionItem questions={questions} />
+        <>
+          <QuestionItem questions={questions} />
+          {isTouchScreen && filteredQuestions.length > 0 && (
+            <div className='load-more'>
+              <Button title="Load more" functionButton={() => setNewLimit(newLimit + limit)} />
+            </div>
+          )}
+        </>
       ) : (
         <div className="no-results-container">
           {isLoading ?
