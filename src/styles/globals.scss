@@ -73,3 +73,18 @@ input {
       background-color: $bg-color;
   }
 }
+
+.wrong {
+  color: red;
+  font-size: $chip-font-size;
+  padding: 10px 0px;
+  display: flex;
+  justify-content: center;
+}
+
+.msg {
+  color: green;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+}

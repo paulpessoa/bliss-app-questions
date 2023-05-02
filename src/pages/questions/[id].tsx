@@ -60,6 +60,7 @@ const QuestionDetails = ({ question }: QuestionDetailsProps) => {
         .update({ choices })
         .match({ id: question.id });
       console.log(error);
+      setSelectedChoice('')
       if (error) {
         console.log(error);
         throw error;
@@ -102,7 +103,7 @@ const QuestionDetails = ({ question }: QuestionDetailsProps) => {
           </div>
           <div className="action">
             <ShareContent />
-            {error && <span className="text">No option selected</span>}
+            {error && <span className="wrong">No option</span>}
             <Button className="primary-button" title="Vote" functionButton={handleModalConfirm} />
           </div>
         </div>
@@ -112,7 +113,7 @@ const QuestionDetails = ({ question }: QuestionDetailsProps) => {
         <div className="modal-overlay" onClick={() => setModalConfirm(false)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2>Confirm your choice?</h2>
-            <p>_ {selectedChoice} _</p>
+            <span className="msg">_ {selectedChoice} _</span>
             <div className="modal-buttons">
               <Button className="outlined-button" title="Cancel" functionButton={() => setModalConfirm(false)} />
               <Button className="primary-button" title="Confirm" functionButton={handleVote} />

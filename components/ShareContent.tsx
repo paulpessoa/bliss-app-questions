@@ -63,12 +63,12 @@ const ShareContent = () => {
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <h2>Share by mail</h2>
             <input placeholder="user@mail.com" value={destination_email} type='email' required onChange={handleChange} />
-            {msg && <span className="text">{msg}</span>}
-            {error && <span className="text">{error}</span>}
+            {error && <span className="wrong">{error}</span>}
             <div className="modal-buttons">
               <Button className="outlined-button" title="Copy link" functionButton={() => handleCopy()} />
               <Button className="primary-button" title="Send now" functionButton={() => handleSubmit()} />
             </div>
+            {msg && <span className="msg">{msg}</span>}
           </div>
         </div >
       )}
