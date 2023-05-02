@@ -13,7 +13,7 @@ To run the project locally, please follow these steps:
 1. Clone the repository:
 
 ```
-git clone https://github.com/yourusername/bliss-app.gi
+git clone https://github.com/paulpessoa/bliss-app-questions.git
 ```
 
 2. Install the dependencies:
