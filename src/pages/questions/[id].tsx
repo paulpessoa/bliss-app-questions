@@ -10,7 +10,7 @@ import ShareContent from "../../../components/ShareContent";
 type Choice = {
   choice: string;
   votes: number;
-  id:string;
+  id: string;
 };
 
 type Question = {
@@ -30,38 +30,40 @@ const QuestionDetails = ({ question }: QuestionDetailsProps) => {
   const router = useRouter();
   const [selectedChoice, setSelectedChoice] = useState<string>("");
   const [modalConfirm, setModalConfirm] = useState<boolean>(false);
-  const [modalShare, setModalShare] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
 
   const handleChoiceSelect = (choice: string) => {
+    setError('')
     setSelectedChoice(choice);
   };
-  const handleSendEmail = () => {
-    alert('Email enviado');
-    setModalShare(false);
-  };
+
+  const handleModalConfirm = () => {
+    if (!selectedChoice) {
+      setModalConfirm(false)
+      setError("No option selected");
+    } else {
+      setModalConfirm(true)
+    }
+  }
 
   const handleVote = async () => {
     if (!question) return;
-
     const choice = question.choices.findIndex((c) => c.choice === selectedChoice);
     const choices = [...question.choices];
     choices[choice] = {
       ...choices[choice],
       votes: choices[choice].votes + 1,
     };
-
     try {
       const { data, error } = await supabase
         .from('questions')
         .update({ choices })
         .match({ id: question.id });
       console.log(error);
-
       if (error) {
         console.log(error);
         throw error;
       }
-
       setModalConfirm(false);
       router.replace(router.asPath);
     } catch (error) {
@@ -75,7 +77,6 @@ const QuestionDetails = ({ question }: QuestionDetailsProps) => {
         <h2>Question details</h2>
         <Button href="/questions" className="outlined-button" title="List" />
       </div>
-
       <div className="content">
         <div className="image">
           <Image
@@ -101,7 +102,8 @@ const QuestionDetails = ({ question }: QuestionDetailsProps) => {
           </div>
           <div className="action">
             <ShareContent />
-            <Button className="primary-button" title="Vote" disabled={selectedChoice === ''} functionButton={() => setModalConfirm(true)} />
+            {error && <span className="text">No option selected</span>}
+            <Button className="primary-button" title="Vote" functionButton={handleModalConfirm} />
           </div>
         </div>
       </div>
